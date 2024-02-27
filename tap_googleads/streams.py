@@ -220,15 +220,16 @@ class AdGroupsPerformance(ReportsStream):
     @property
     def gaql(self):
         return f"""
-        SELECT campaign.id, ad_group.id, metrics.impressions, metrics.clicks,
-               metrics.cost_micros
-               FROM ad_group
-               WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, metrics.impressions,
+        metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value,
+        metrics.video_views, metrics.video_quartile_p100_rate
+        FROM ad_group
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
     name = "stream_adgroupsperformance"
-    primary_keys = ["campaign__id", "ad_group__id"]
+    primary_keys = ["campaign__id", "ad_group__id", "segments__date"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
@@ -239,7 +240,10 @@ class CampaignPerformance(ReportsStream):
     @property
     def gaql(self):
         return f"""
-    SELECT campaign.name, campaign.status, segments.device, segments.date, metrics.impressions, metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, metrics.impressions,
+    metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions,
+    metrics.conversions_value, metrics.video_views, metrics.video_quartile_p100_rate
+    FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"

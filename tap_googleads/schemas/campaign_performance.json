@@ -15,6 +15,9 @@
                             },
                             "name": {
                                 "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
                             }
                         }
                     },
@@ -35,6 +38,18 @@
                             },
                             "impressions": {
                                 "type": "string"
+                            },
+                            "conversions": {
+                                "type": "number"
+                            },
+                            "conversions_value": {
+                                "type": "string"
+                            },
+                            "video_views": {
+                                "type": "string"
+                            },
+                            "video_quartile_p100_rate": {
+                                "type": "number"
                             }
                         }
                     },

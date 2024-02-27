@@ -12,6 +12,9 @@
                 },
                 "id": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -22,6 +25,9 @@
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -36,6 +42,26 @@
                     "type": "string"
                 },
                 "impressions": {
+                    "type": "string"
+                },
+                "conversions": {
+                    "type": "number"
+                },
+                "conversions_value": {
+                    "type": "string"
+                },
+                "video_views": {
+                    "type": "string"
+                },
+                "video_quartile_p100_rate": {
+                    "type": "number"
+                }
+            }
+        },
+        "segments": {
+            "type": "object",
+            "properties": {
+                "date": {
                     "type": "string"
                 }
             }
