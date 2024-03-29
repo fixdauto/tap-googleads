@@ -1,0 +1,71 @@
+{
+                "type": "object",
+                "properties": {
+                "customer_id": {
+                    "type": "string"
+                },
+                    "campaign": {
+                        "type": "object",
+                        "properties": {
+                            "resourceName": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "metrics": {
+                        "type": "object",
+                        "properties": {
+                            "clicks": {
+                                "type": "string"
+                            },
+                            "costMicros": {
+                                "type": "string"
+                            },
+                            "ctr": {
+                                "type": "number"
+                            },
+                            "averageCpc": {
+                                "type": "number"
+                            },
+                            "impressions": {
+                                "type": "string"
+                            },
+                            "conversions": {
+                                "type": "number"
+                            },
+                            "conversions_value": {
+                                "type": "string"
+                            },
+                            "video_views": {
+                                "type": "string"
+                            },
+                            "video_quartile_p100_rate": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "segments": {
+                        "type": "object",
+                        "properties": {
+                            "device": {
+                                "type": "string"
+                            },
+                            "date": {
+                                "type": "string"
+                            },
+                            "hour": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+}
