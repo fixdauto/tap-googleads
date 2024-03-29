@@ -233,6 +233,25 @@ class AdGroupsPerformance(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
+class AdGroupsHourlyPerformance(ReportsStream):
+    """AdGroups Performance"""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, segments.hour, metrics.impressions,
+        metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value,
+        metrics.video_views, metrics.video_quartile_p100_rate
+        FROM ad_group
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_adgroupshourlyperformance"
+    primary_keys = ["campaign__id", "ad_group__id", "segments__date", "segments__hour"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "adgroups_hourly_performance.json"
+
 
 class CampaignPerformance(ReportsStream):
     """Campaign Performance"""
@@ -256,6 +275,31 @@ class CampaignPerformance(ReportsStream):
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance.json"
+
+
+class CampaignHourlyPerformance(ReportsStream):
+    """Campaign Performance"""
+
+    @property
+    def gaql(self):
+        return f"""
+    SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, segments.hour, metrics.impressions,
+    metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions,
+    metrics.conversions_value, metrics.video_views, metrics.video_quartile_p100_rate
+    FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_campaign_hourly_performance"
+    primary_keys = [
+        "campaign__name",
+        "campaign__status",
+        "segments__date",
+        "segments__hour",
+        "segments__device",
+    ]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "campaign_hourly_performance.json"
 
 
 class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
@@ -321,6 +365,7 @@ class CampaignPerformanceByLocation(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
 
+
 class GeoPerformance(ReportsStream):
     """Geo performance"""
 
@@ -347,7 +392,7 @@ class GeoPerformance(ReportsStream):
         "geographic_view__country_criterion_id",
         "customer_id",
         "campaign__name",
-        "segments__date"
+        "segments__date",
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "geo_performance.json"
