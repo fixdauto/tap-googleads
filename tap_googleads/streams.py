@@ -2,6 +2,7 @@
 
 from pathlib import Path
 from typing import Any, Dict, Optional, Union, List, Iterable
+from datetime import datetime, timedelta
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
@@ -219,12 +220,14 @@ class AdGroupsPerformance(ReportsStream):
 
     @property
     def gaql(self):
+        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
         SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, metrics.impressions,
         metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value,
         metrics.video_views, metrics.video_quartile_p100_rate
         FROM ad_group
-        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
@@ -238,12 +241,14 @@ class AdGroupsHourlyPerformance(ReportsStream):
 
     @property
     def gaql(self):
+        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
         SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, segments.hour, metrics.impressions,
         metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value,
         metrics.video_views, metrics.video_quartile_p100_rate
         FROM ad_group
-        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
@@ -258,11 +263,13 @@ class CampaignPerformance(ReportsStream):
 
     @property
     def gaql(self):
+        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
     SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, metrics.impressions,
     metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions,
     metrics.conversions_value, metrics.video_views, metrics.video_quartile_p100_rate
-    FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
@@ -282,11 +289,13 @@ class CampaignHourlyPerformance(ReportsStream):
 
     @property
     def gaql(self):
+        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
     SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, segments.hour, metrics.impressions,
     metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions,
     metrics.conversions_value, metrics.video_views, metrics.video_quartile_p100_rate
-    FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
