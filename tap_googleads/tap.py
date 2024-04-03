@@ -65,6 +65,10 @@ class TapGoogleAds(Tap):
             "customer_id",
             th.StringType,
         ),
+        th.Property(
+            "performance_report_interval_days",
+            th.IntegerType,
+        )
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
