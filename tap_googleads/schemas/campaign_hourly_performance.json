@@ -42,7 +42,13 @@
                             "conversions": {
                                 "type": "number"
                             },
+                            "conversions_by_conversion_date": {
+                                "type": "number"
+                            },
                             "conversions_value": {
+                                "type": "string"
+                            },
+                            "conversions_value_by_conversion_date": {
                                 "type": "string"
                             },
                             "video_views": {
