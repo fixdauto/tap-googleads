@@ -18,17 +18,19 @@
                 }
             }
         },
-        "adGroup": {
+        "adGroupAd": {
             "type": "object",
             "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "ad": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         },
