@@ -1,0 +1,38 @@
+{
+    "type": "object",
+    "properties": {
+        "adGroupAd": {
+            "type": "object",
+            "properties": {
+                "ad": {
+                    "type": "object",
+                    "properties": {
+                        "resourceName": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "campaign": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

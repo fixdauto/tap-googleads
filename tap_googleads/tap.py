@@ -7,8 +7,9 @@ from singer_sdk import typing as th  # JSON schema typing helpers
 
 from tap_googleads.streams import (
     CampaignsStream,
+    AdsStream,
     AdGroupsStream,
-    AdGroupsPerformance,
+    AdsPerformance,
     AdGroupsHourlyPerformance,
     AccessibleCustomers,
     CustomerHierarchyStream,
@@ -23,8 +24,9 @@ from tap_googleads.streams import (
 
 STREAM_TYPES = [
     CampaignsStream,
+    AdsStream,
     AdGroupsStream,
-    AdGroupsPerformance,
+    AdsPerformance,
     AdGroupsHourlyPerformance,
     AccessibleCustomers,
     CustomerHierarchyStream,
@@ -68,7 +70,7 @@ class TapGoogleAds(Tap):
         th.Property(
             "performance_report_interval_days",
             th.IntegerType,
-        )
+        ),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
