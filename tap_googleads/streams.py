@@ -258,9 +258,32 @@ class AdsPerformance(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_adsperformance"
-    primary_keys = ["campaign__id", "ad_group_ad__ad__name", "segments__date"]
+    primary_keys = ["campaign__id", "ad_group_ad__ad__id", "segments__date"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "ads_performance.json"
+
+
+class AdGroupsPerformance(ReportsStream):
+    """AdGroups Performance"""
+
+    @property
+    def gaql(self):
+        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
+        return f"""
+        SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, metrics.impressions,
+        metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_by_conversion_date,
+        metrics.conversions_value, metrics.conversions_value_by_conversion_date, metrics.video_views,
+        metrics.video_quartile_p100_rate
+        FROM ad_group
+        WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_adgroupsperformance"
+    primary_keys = ["campaign__id", "ad_group__id", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
 
 class AdGroupsHourlyPerformance(ReportsStream):
