@@ -21,7 +21,7 @@ SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 class GoogleAdsStream(RESTStream):
     """GoogleAds stream class."""
 
-    url_base = "https://googleads.googleapis.com/v16"
+    url_base = "https://googleads.googleapis.com/v18"
 
     records_jsonpath = "$[*]"  # Or override `parse_response`.
     next_page_token_jsonpath = "$.nextPageToken"  # Or override `get_next_page_token`.
@@ -112,7 +112,7 @@ class GoogleAdsStream(RESTStream):
             params["sort"] = "asc"
             params["order_by"] = self.replication_key
         return params
-
+    
     @property
     def start_date(self):
         date = self.config.get("start_date")
@@ -128,3 +128,4 @@ class GoogleAdsStream(RESTStream):
             date = parser.parse(self.config.get("end_date"))
             date = "'" + date.strftime("%Y-%m-%d") + "'"
         return date or self._end_date
+    
