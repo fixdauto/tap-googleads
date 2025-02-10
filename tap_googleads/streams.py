@@ -3,11 +3,11 @@
 from pathlib import Path
 from typing import Any, Dict, Optional, Union, List, Iterable
 from datetime import datetime, timedelta
+import logging
 
-from singer_sdk import typing as th  # JSON Schema typing helpers
+from singer_sdk import typing as th, metrics  # JSON Schema typing helpers
 
 from tap_googleads.client import GoogleAdsStream
-from tap_googleads.auth import GoogleAdsAuthenticator
 
 # TODO: Delete this is if not using json files for schema definition
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
@@ -45,11 +45,9 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
     @property
     def path(self):
-        # Paramas
         path = f"/customers/{self.config.get('customer_id')}"
         path = path + "/googleAds:search"
-        path = path + "?pageSize=10000"
-        path = path + f"&query={self.gaql}"
+        path = path + f"?query={self.gaql}"
         return path
 
     @property
@@ -149,11 +147,9 @@ class ReportsStream(GoogleAdsStream):
 
     @property
     def path(self):
-        # Paramas
         path = f"/customers/{self.config.get('customer_id')}"
         path = path + "/googleAds:search"
-        path = path + "?pageSize=10000"
-        path = path + f"&query={self.gaql}"
+        path = path + f"?query={self.gaql}"
         return path
 
 
@@ -268,7 +264,9 @@ class AdGroupsPerformance(ReportsStream):
 
     @property
     def gaql(self):
-        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = datetime.now() - timedelta(
+            days=self.config.get("performance_report_interval_days")
+        )
         start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
         SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, metrics.impressions,
@@ -291,7 +289,9 @@ class AdGroupsHourlyPerformance(ReportsStream):
 
     @property
     def gaql(self):
-        start_date = datetime.now() - timedelta(days=self.config.get("performance_report_interval_days"))
+        start_date = datetime.now() - timedelta(
+            days=self.config.get("performance_report_interval_days")
+        )
         start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
         SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, segments.date, segments.hour, metrics.impressions,
@@ -325,6 +325,15 @@ class CampaignPerformance(ReportsStream):
     FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
     """
 
+    def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
+        """Return a generator of row-type dictionary objects."""
+        try:
+            for row in self.request_records(context):
+                yield row
+        except Exception as e:
+            logging.error(f"Error fetching records for CampaignPerformance: {e}")
+            raise
+
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_performance"
     primary_keys = [
@@ -352,6 +361,15 @@ class CampaignHourlyPerformance(ReportsStream):
     metrics.conversions_value, metrics.conversions_value_by_conversion_date, metrics.video_views, metrics.video_quartile_p100_rate
     FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
     """
+
+    def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
+        """Return a generator of row-type dictionary objects."""
+        try:
+            for row in self.request_records(context):
+                yield row
+        except Exception as e:
+            logging.error(f"Error fetching records for CampaignHourlyPerformance: {e}")
+            raise
 
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_hourly_performance"
