@@ -244,10 +244,11 @@ class AdsPerformance(ReportsStream):
         )
         start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
-        SELECT campaign.name, campaign.id, ad_group_ad.ad.name, ad_group_ad.ad.id, segments.date, metrics.impressions,
-        metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_by_conversion_date,
-        metrics.conversions_value, metrics.conversions_value_by_conversion_date, metrics.video_views,
-        metrics.video_quartile_p100_rate
+        SELECT campaign.name, campaign.id, ad_group.name, ad_group.id, ad_group_ad.ad.name,
+        ad_group_ad.ad.id, segments.date, metrics.impressions, metrics.clicks, metrics.cost_micros,
+        metrics.conversions, metrics.conversions_by_conversion_date, metrics.conversions_value,
+        metrics.conversions_value_by_conversion_date, metrics.video_views, metrics.video_quartile_p25_rate,
+        metrics.video_quartile_p50_rate, metrics.video_quartile_p75_rate, metrics.video_quartile_p100_rate
         FROM ad_group_ad
         WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
         """

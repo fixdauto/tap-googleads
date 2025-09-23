@@ -1,9 +1,20 @@
 {
     "type": "object",
     "properties": {
-                "customer_id": {
+        "customer_id": {
+            "type": "string"
+        },
+        "adGroup": {
+            "type": "object",
+            "properties": {
+                "id": {
                     "type": "string"
                 },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "campaign": {
             "type": "object",
             "properties": {
@@ -60,6 +71,15 @@
                 },
                 "video_views": {
                     "type": "string"
+                },
+                "video_quartile_p25_rate": {
+                    "type": "number"
+                },
+                "video_quartile_p50_rate": {
+                    "type": "number"
+                },
+                "video_quartile_p75_rate": {
+                    "type": "number"
                 },
                 "video_quartile_p100_rate": {
                     "type": "number"
