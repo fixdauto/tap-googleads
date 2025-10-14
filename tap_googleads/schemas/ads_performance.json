@@ -72,6 +72,12 @@
                 "video_views": {
                     "type": "string"
                 },
+                "engagements": {
+                    "type": "string"
+                },
+                "interactions": {
+                    "type": "string"
+                },
                 "video_quartile_p25_rate": {
                     "type": "number"
                 },
