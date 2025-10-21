@@ -497,6 +497,10 @@ class AssetGroupPerformance(ReportsStream):
 
     @property
     def gaql(self) -> str:
+        start_date = datetime.now() - timedelta(
+            days=self.config.get("performance_report_interval_days")
+        )
+        start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
     SELECT
         customer.id, campaign.id, campaign.name, campaign.status, asset_group.id, asset_group.name,
