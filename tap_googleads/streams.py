@@ -480,3 +480,30 @@ class GeoPerformance(ReportsStream):
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "geo_performance.json"
+
+
+class AssetGroupPerformance(ReportsStream):
+    """Performance by asset groups."""
+    name = "stream_asset_group_performance"
+    records_jsonpath = "$.results[*]"
+    primary_keys = [
+        "customer_id",
+        "campaign__id",
+        "asset_group__id",
+        "segments__date",
+    ]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "asset_group_performance.json"
+
+    @property
+    def gaql(self) -> str:
+        return f"""
+    SELECT
+        customer.id, campaign.id, campaign.name, campaign.status, asset_group.id, asset_group.name,
+        asset_group.status, metrics.impressions, metrics.clicks, metrics.cost_micros,
+        metrics.conversions, metrics.conversions_by_conversion_date, metrics.conversions_value,
+        metrics.conversions_value_by_conversion_date, metrics.interactions, segments.date
+    FROM asset_group
+    WHERE segments.date >= {self.start_date} AND segments.date <= {self.end_date}
+    ORDER BY segments.date
+    """
