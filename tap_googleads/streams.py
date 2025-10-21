@@ -508,6 +508,6 @@ class AssetGroupPerformance(ReportsStream):
         metrics.conversions, metrics.conversions_by_conversion_date, metrics.conversions_value,
         metrics.conversions_value_by_conversion_date, metrics.interactions, segments.date
     FROM asset_group
-    WHERE segments.date >= {self.start_date} AND segments.date <= {self.end_date}
+    WHERE segments.date >= {start_date} AND segments.date <= {self.end_date}
     ORDER BY segments.date
     """
