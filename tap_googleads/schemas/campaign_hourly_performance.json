@@ -18,6 +18,9 @@
                             },
                             "id": {
                                 "type": "string"
+                            },
+                            "advertising_channel_type": {
+                                "type": "string"
                             }
                         }
                     },

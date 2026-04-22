@@ -321,7 +321,7 @@ class CampaignPerformance(ReportsStream):
         )
         start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
-    SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, metrics.impressions,
+    SELECT campaign.name, campaign.id, campaign.status, campaign.advertising_channel_type, segments.device, segments.date, metrics.impressions,
     metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions, metrics.conversions_by_conversion_date,
     metrics.conversions_value, metrics.conversions_value_by_conversion_date, metrics.video_views, metrics.video_quartile_p100_rate
     FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
@@ -358,7 +358,7 @@ class CampaignHourlyPerformance(ReportsStream):
         )
         start_date = "'" + start_date.strftime("%Y-%m-%d") + "'"
         return f"""
-    SELECT campaign.name, campaign.id, campaign.status, segments.device, segments.date, segments.hour, metrics.impressions,
+    SELECT campaign.name, campaign.id, campaign.status, campaign.advertising_channel_type, segments.device, segments.date, segments.hour, metrics.impressions,
     metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros, metrics.conversions, metrics.conversions_by_conversion_date,
     metrics.conversions_value, metrics.conversions_value_by_conversion_date, metrics.video_views, metrics.video_quartile_p100_rate
     FROM campaign WHERE segments.date >= {start_date} and segments.date <= {self.end_date}
